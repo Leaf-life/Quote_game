@@ -5,7 +5,6 @@
 <title>Quote App</title>
 
 <style>
-  /* Reset & basic styles */
   body {
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
@@ -17,27 +16,37 @@
   }
 
   .container {
-    text-align:center;
+    text-align: center;
     max-width:90%;
     width:75vw;          /* 75% of viewport width */
     padding:1rem;
     box-sizing:border-box;
   }
 
-  h1 {
-    color:#333;
+  h1 { color:#333; }
+
+  /* The “box” that holds both quote & author */
+  .quote-box {
+    margin-top: 2rem;
+    border:1px solid #ddd;
+    background:#fff;
+    padding:1rem;
+    padding-top:0rem;
+    padding-bottom:0rem;
+    border-radius:4px;
+    width:100%;          /* take full width of the container */
+    box-sizing:border-box;
   }
 
-  #quote {
-    margin-top:2rem;
+  .quote-text,
+  .author-text {
     font-size:1.25rem;
     line-height:1.6;
     color:#555;
-    border:1px solid #ddd;
-    padding:.5rem;
-    background:#fff;
-    border-radius:4px;
+    margin-top:1rem;
   }
+  .quote-text { text-align:left; }
+  .author-text { text-align:right; }
 
   button {
     padding:0.75rem 1.5rem;
@@ -62,7 +71,12 @@
 <div class="container">
   <h1>Random Quote Generator</h1>
   <button id="btn">Show Quote</button>
-  <p id="quote"></p>
+
+  <!-- The shared box -->
+  <div class="quote-box">
+    <p id="quote" class="quote-text">Click the button to get a quote!</p>
+    <p id="author" class="author-text"></p>
+  </div>
 </div>
 
 <script>
@@ -73,9 +87,11 @@ document.getElementById('btn').addEventListener('click', async () => {
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const data=await response.json();
     document.getElementById('quote').textContent=data.quote || 'No quote found.';
+    document.getElementById('author').textContent=`— ${data.author}` || '';
   }catch(err){
     console.error(err);
     document.getElementById('quote').textContent='Error fetching quote.';
+    document.getElementById('author').textContent='';
   }
 });
 </script>
